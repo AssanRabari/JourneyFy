@@ -58,15 +58,21 @@
         }
       }
       @include md {
-        width: auto;
+        width: 200px;
 
+        &:nth-child(2),
+        &:nth-child(3) {
+          width: 200px;
+        }
+      }
+      @include sm {
+        width: auto;
         &:nth-child(2),
         &:nth-child(3) {
           width: auto;
         }
-      }
-      @include sm {
         padding: 15px;
+        border: 1px solid #999;
       }
     }
 
