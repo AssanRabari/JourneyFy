@@ -11,7 +11,7 @@ const ListPage = () => {
         <div className="wrapper">
           <Filter />
           {data?.map((item) => (
-            <Card />
+            <Card item={item} />
           ))}
         </div>
       </div>
