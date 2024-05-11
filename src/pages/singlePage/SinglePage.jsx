@@ -28,7 +28,14 @@ const SinglePage = () => {
         </div>
       </div>
       <div className="features">
-        <div className="wrapper"></div>
+        <div className="wrapper">
+          <p className="title">General</p>
+          <p className="title">Room Siral</p>
+
+          <p className="title">General</p>
+
+          <p className="title">General</p>
+        </div>
       </div>
     </div>
   );
