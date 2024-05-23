@@ -47,14 +47,14 @@ export const login = async (req, res) => {
       "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxNjI2MzU0NCwiaWF0IjoxNzE2MjYzNTQ0fQ.NPdgz8ETPhM62UPaWs5RoTib4Hd77Yh_D4hK41EeR_g",
       { expiresIn: age }
     );
-
+    const { password: userPassword, ...userInfo } = user
     res
       .cookie("token", token, {
         httpOnly: true,
         maxAge: age,
       })
       .status(200)
-      .json({ message: "Login Successfull" });
+      .json(userInfo);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Failed to login!" });

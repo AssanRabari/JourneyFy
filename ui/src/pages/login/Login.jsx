@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import "./Login.scss";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 // import apiRequest from "../../lib/apiRequest";
 // import { AuthContext } from "../../context/AuthContext";
 
@@ -22,10 +23,10 @@ function Login() {
     const password = formData.get("password");
 
     try {
-      // const res = await apiRequest.post("/auth/login", {
-      //   username,
-      //   password,
-      // });
+      const res = await axios.post("http://localhost:8800/api/auth/login", {
+        username,
+        password,
+      });
 
       // updateUser(res.data)
 

@@ -26,10 +26,9 @@ function Register() {
         email,
         password,
       });
-      console.log(res);
       navigate("/login");
     } catch (err) {
-      setError(err.response);
+      setError(err.response.data.message);
     } finally {
       setIsLoading(false);
     }
