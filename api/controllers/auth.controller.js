@@ -43,6 +43,7 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       {
         id: user.id,
+        isAdmin: false
       },
       "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxNjI2MzU0NCwiaWF0IjoxNzE2MjYzNTQ0fQ.NPdgz8ETPhM62UPaWs5RoTib4Hd77Yh_D4hK41EeR_g",
       { expiresIn: age }
