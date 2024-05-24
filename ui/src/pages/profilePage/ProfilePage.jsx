@@ -2,7 +2,22 @@ import React from "react";
 import "./ProfilePage.scss";
 import List from "../../components/list/List";
 import Chat from "../../components/chat/Chat";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const ProfilePage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8800/api/auth/logout"
+      );
+      localStorage.removeItem("user");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="profilePage">
       <div className="details">
@@ -25,6 +40,7 @@ const ProfilePage = () => {
             <span>
               E-mail: <b>assan@gmail.coms</b>
             </span>
+            <button onClick={handleLogout}>Logout</button>
           </div>
           <div className="title">
             <h1>My List</h1>

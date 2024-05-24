@@ -28,6 +28,8 @@ function Login() {
         password,
       });
 
+      localStorage.setItem("user", JSON.stringify(res.data._doc));
+
       // updateUser(res.data)
 
       navigate("/");
