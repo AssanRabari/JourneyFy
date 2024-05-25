@@ -3,13 +3,13 @@ import "./Login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import apiRequest from "../../lib/apiRequest";
-// import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // const {updateUser} = useContext(AuthContext)
+  const { updateUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -28,9 +28,7 @@ function Login() {
         password,
       });
 
-      localStorage.setItem("user", JSON.stringify(res.data._doc));
-
-      // updateUser(res.data)
+      updateUser(res.data._doc);
 
       navigate("/");
     } catch (err) {
