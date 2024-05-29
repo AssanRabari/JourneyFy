@@ -49,9 +49,17 @@ export const updateUser = async (req, res) => {
 }
 
 export const deleteUser = async (req, res) => {
+
+    const userId = req.params.id;
+    const tokenUserId = req.userId
+
+    if (userId !== tokenUserId) {
+        res.status(403).json({ message: "Not Authorized" })
+    }
+
     try {
-        const result = await User.findByIdAndDelete(req.params.id);
-        res.status(204).json({ message: "User deleted successfully!", result: result })
+        await User.findByIdAndDelete(userId);
+        res.status(200).json({ message: "User deleted successfully!" })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to delete user!" })
