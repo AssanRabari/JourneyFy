@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
+import axios from "axios";
 import "./UpdateProfilePages.scss";
 import { AuthContext } from "../../context/AuthContext";
+
 // import apiRequest from "../../lib/apiRequest";
 import { useNavigate } from "react-router-dom";
 // import UploadWidget from "../../components/uploadWidget/UploadWidget";
@@ -18,19 +20,22 @@ function UpdateProfilePage() {
 
     const { username, email, password } = Object.fromEntries(formData);
 
-    // try {
-    //   const res = await apiRequest.put(`/users/${currentUser.id}`, {
-    //     username,
-    //     email,
-    //     password,
-    //     avatar:avatar[0]
-    //   });
-    //   updateUser(res.data);
-    //   navigate("/profile");
-    // } catch (err) {
-    //   console.log(err);
-    //   setError(err.response.data.message);
-    // }
+    try {
+      const res = await axios.put(
+        `http://localhost:8800/api/user/${currentUser._id}`,
+        {
+          username,
+          email,
+          password,
+          avatar: avatar[0],
+        },
+      );
+      updateUser(res.data);
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data.message);
+    }
   };
 
   return (
@@ -65,8 +70,15 @@ function UpdateProfilePage() {
         </form>
       </div>
       <div className="sideContainer">
-        <img src={avatar[0] || currentUser.avatar ||
-                  "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"} alt="" className="avatar" />
+        <img
+          src={
+            avatar[0] ||
+            currentUser.avatar ||
+            "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          }
+          alt=""
+          className="avatar"
+        />
         {/* <UploadWidget
           uwConfig={{
             cloudName: "lamadev",
