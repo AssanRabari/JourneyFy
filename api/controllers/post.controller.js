@@ -1,11 +1,10 @@
 import Post from "../models/post.model.js"
 
 export const getPosts = async (req, res) => {
-    console.log("get posts")
 
     try {
-        // const posts = await Post.find();
-        // res.status(200).json(posts)
+        const posts = await Post.find();
+        res.status(200).json(posts)
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to get posts!" })
@@ -13,12 +12,10 @@ export const getPosts = async (req, res) => {
 }
 
 export const getPost = async (req, res) => {
-    console.log("get post")
-
-    // const postId = req.params.id;
+    const postId = req.params.id;
     try {
-        // const singlePost = await Post.findById({ _id: postId });
-        // res.status(200).json(singlePost)
+        const singlePost = await Post.findById({ _id: postId });
+        res.status(200).json(singlePost)
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to get post!" })
