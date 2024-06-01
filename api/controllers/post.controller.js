@@ -23,12 +23,19 @@ export const getPost = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    console.log("create post")
+    const body = req.body;
+    const tokenUserId = req.userId;
+    console.log("body--->", body)
+    console.log("body--->", tokenUserId)
 
-    // const postId = req.params.id;
     try {
-        // const singlePost = await Post.findById({ _id: postId });
-        // res.status(200).json(singlePost)
+        const newPost = await new Post({
+            data: {
+                ...body,
+                user: tokenUserId,
+            }
+        });
+        res.status(200).json(newPost)
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to create post!" })
@@ -55,17 +62,19 @@ export const updatePost = async (req, res) => {
 }
 
 export const deletePost = async (req, res) => {
-    console.log("delete post")
-    // const postId = req.params.id;
-    // const tokenUserId = req.userId
+    const postId = req.params.id;
+    const tokenUserId = req.userId
 
-    // if (postId !== tokenUserId) {
-    //     res.status(403).json({ message: "Not Authorized" })
-    // }
-
+    console.log("delete post", postId, tokenUserId)
     try {
-        // await Post.findByIdAndDelete(postId);
-        // res.status(200).json({ message: "Post deleted successfully!" })
+        const post = await Post.findById(postId);
+        console.log("delete post--", post)
+
+        if (post?._id !== tokenUserId) {
+            return res.status(403).json({ message: "Not Authorized" })
+        }
+        await Post.findByIdAndDelete(postId);
+        res.status(200).json({ message: "PostF deleted successfully!" })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to delete post!" })
