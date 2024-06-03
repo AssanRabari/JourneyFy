@@ -54,6 +54,10 @@ const postSchema = new Schema(
             required: true,
             ref: 'User'
         },
+        postDetails: [{
+            type: Schema.Types.ObjectId,
+            ref: 'PostDetails'
+        }],
     },
     {
         timestamps: true,
