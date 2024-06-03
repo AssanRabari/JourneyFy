@@ -23,18 +23,10 @@ export const getPost = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    const body = req.body;
-    const tokenUserId = req.userId;
-    console.log("body--->", body)
-    console.log("body--->", tokenUserId)
 
     try {
-        const newPost = await new Post({
-            data: {
-                ...body,
-                user: tokenUserId,
-            }
-        });
+        const newPost = await new Post(req.body);
+        newPost.save();
         res.status(200).json(newPost)
     } catch (error) {
         console.log(error)
@@ -65,16 +57,15 @@ export const deletePost = async (req, res) => {
     const postId = req.params.id;
     const tokenUserId = req.userId
 
-    console.log("delete post", postId, tokenUserId)
     try {
         const post = await Post.findById(postId);
-        console.log("delete post--", post)
+        const userId = String(post?.user)
 
-        if (post?._id !== tokenUserId) {
+        if (userId !== tokenUserId) {
             return res.status(403).json({ message: "Not Authorized" })
         }
         await Post.findByIdAndDelete(postId);
-        res.status(200).json({ message: "PostF deleted successfully!" })
+        res.status(200).json({ message: "Post deleted successfully!" })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to delete post!" })
