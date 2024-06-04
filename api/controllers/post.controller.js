@@ -1,9 +1,10 @@
 import Post from "../models/post.model.js"
+import PostDetails from "../models/postdetails.model.js";
 
 export const getPosts = async (req, res) => {
 
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().populate('postDetails');
         res.status(200).json(posts)
     } catch (error) {
         console.log(error)
@@ -14,7 +15,7 @@ export const getPosts = async (req, res) => {
 export const getPost = async (req, res) => {
     const postId = req.params.id;
     try {
-        const singlePost = await Post.findById({ _id: postId });
+        const singlePost = await Post.findById({ _id: postId }).populate('postDetails');;
         res.status(200).json(singlePost)
     } catch (error) {
         console.log(error)
@@ -25,12 +26,19 @@ export const getPost = async (req, res) => {
 export const createPost = async (req, res) => {
 
     try {
-        const newPost = await new Post(req.body);
-        newPost.save();
-        res.status(200).json(newPost)
+        const newPostDetails = new PostDetails(req.body.postDetails);
+        await newPostDetails.save();
+
+        const newPost = new Post({
+            ...req.body.postData,
+            postDetails: newPostDetails._id
+        });
+        await newPost.save();
+
+        res.status(200).json(newPost);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "Failed to create post!" })
+        console.log(error);
+        res.status(500).json({ message: error.message || "Failed to create post!" });
     }
 }
 
