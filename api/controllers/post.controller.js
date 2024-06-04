@@ -15,7 +15,7 @@ export const getPosts = async (req, res) => {
 export const getPost = async (req, res) => {
     const postId = req.params.id;
     try {
-        const singlePost = await Post.findById({ _id: postId }).populate('postDetails');;
+        const singlePost = await Post.findById({ _id: postId }).populate('postDetails').populate('user');
         res.status(200).json(singlePost)
     } catch (error) {
         console.log(error)
