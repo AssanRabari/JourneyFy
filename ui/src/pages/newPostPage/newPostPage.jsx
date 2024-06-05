@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./newPostPage.scss";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 // import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 function NewPostPage() {
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-
+  const { updateUser, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,7 +19,6 @@ function NewPostPage() {
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
 
-    console.log("inputs--->", inputs);
     try {
       const res = await axios.post("http://localhost:8800/api/post", {
         postData: {
@@ -30,6 +30,7 @@ function NewPostPage() {
           bathroom: parseInt(inputs.bathroom),
           type: inputs.type,
           property: inputs.property,
+          user: currentUser._id,
           latitude: inputs.latitude,
           longitude: inputs.longitude,
           images: "",
