@@ -2,7 +2,8 @@ import Post from "../models/post.model.js"
 import PostDetails from "../models/postdetails.model.js";
 
 export const getPosts = async (req, res) => {
-
+    const query = req.query;
+    console.log(query)
     try {
         const posts = await Post.find().populate('postDetails');
         res.status(200).json(posts)
