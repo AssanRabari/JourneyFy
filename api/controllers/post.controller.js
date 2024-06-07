@@ -5,7 +5,11 @@ export const getPosts = async (req, res) => {
     const query = req.query;
     console.log(query)
     try {
-        const posts = await Post.find().populate('postDetails');
+        const filter = {};
+        if (query.location) filter.location = query.location;
+        if (query.minPrice) filter.price = { $gte: query.minPrice };
+        if (query.maxPrice) filter.price = { ...filter.price, $lte: query.maxPrice }
+        const posts = await Post.find(filter).populate('postDetails');
         res.status(200).json(posts)
     } catch (error) {
         console.log(error)
