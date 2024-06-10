@@ -12,11 +12,10 @@ export const getPosts = async (req, res) => {
             bedroom: query.bedroom || undefined,
             price: {
                 $gte: parseInt(query.minPrice) || 0,
-                $lte: parseInt(query.minPrice) || 1000000
-
+                $lte: parseInt(query.maxPrice) || 1000000
             },
-            // if(query.maxPrice) filter.price = { ...filter.price, $lte: query.maxPrice }
         };
+        console.log("filter--", filter)
         const posts = await Post.find(filter).populate('postDetails');
         res.status(200).json(posts)
     } catch (error) {
