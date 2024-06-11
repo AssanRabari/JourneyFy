@@ -15,6 +15,11 @@ const SearchBar = () => {
     setQuery((prev) => ({ ...prev, type: value }));
   };
 
+  const handleChange = (e) => {
+    setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  console.log("first", query);
+
   return (
     <div className="searchBar">
       <div className="type">
@@ -29,13 +34,19 @@ const SearchBar = () => {
         ))}
       </div>
       <form>
-        <input type="text" name="location" placeholder="City Location" />
+        <inputon
+          type="text"
+          name="city"
+          placeholder="City"
+          Change={handleChange}
+        />
         <input
           type="number"
           name="minPrice"
           min={0}
           max={10000000}
           placeholder="Min Price"
+          onChange={handleChange}
         />
         <input
           type="number"
@@ -43,6 +54,7 @@ const SearchBar = () => {
           min={0}
           max={10000000}
           placeholder="Max Price"
+          onChange={handleChange}
         />
         <button>
           <img src="./search.png" alt="" />
