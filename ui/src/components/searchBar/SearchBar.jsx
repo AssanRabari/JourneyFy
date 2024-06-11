@@ -6,7 +6,7 @@ const type = ["buy", "rent"];
 const SearchBar = () => {
   const [query, setQuery] = useState({
     type: "buy",
-    location: "",
+    city: "",
     minPrice: 0,
     maxPrice: 0,
   });
@@ -16,6 +16,7 @@ const SearchBar = () => {
   };
 
   const handleChange = (e) => {
+    console.log("-------", {[e.target.name]: e.target.value});
     setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   console.log("first", query);
