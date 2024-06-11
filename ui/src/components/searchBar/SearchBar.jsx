@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SearchBar.scss";
-
+import { Link } from "react-router-dom";
 const type = ["buy", "rent"];
 
 const SearchBar = () => {
@@ -34,7 +34,7 @@ const SearchBar = () => {
         ))}
       </div>
       <form>
-        <inputon
+        <input
           type="text"
           name="city"
           placeholder="City"
@@ -56,9 +56,13 @@ const SearchBar = () => {
           placeholder="Max Price"
           onChange={handleChange}
         />
-        <button>
-          <img src="./search.png" alt="" />
-        </button>
+        <Link
+          to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}
+        >
+          <button>
+            <img src="./search.png" alt="" />
+          </button>
+        </Link>
       </form>
     </div>
   );
