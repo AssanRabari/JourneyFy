@@ -1,5 +1,6 @@
 import Post from "../models/post.model.js"
 import PostDetails from "../models/postdetails.model.js";
+import SavedPost from "../models/savedpost.model.js";
 
 export const getPosts = async (req, res) => {
     const query = req.query;
@@ -91,3 +92,28 @@ export const deletePost = async (req, res) => {
         res.status(500).json({ message: "Failed to delete post!" })
     }
 }
+
+
+export const savePost = async (req, res) => {
+    const postId = req.body.postId;
+    const userTokenId = req.userId;
+
+    try {
+        const existingSavedPost = await SavedPost.findOne({ userId: userTokenId, postId: postId });
+
+        if (existingSavedPost) {
+            await SavedPost.deleteOne({ _id: existingSavedPost._id });
+            res.status(200).json({ message: "Post unsaved successfully!" });
+        } else {
+            const savedPost = new SavedPost({
+                userId: userTokenId,
+                postId: postId
+            });
+            await savedPost.save();
+            res.status(200).json({ message: "Post saved successfully!" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message || "Failed to save/unsave post!" });
+    }
+};
