@@ -4,7 +4,6 @@ import SavedPost from "../models/savedpost.model.js";
 
 export const getPosts = async (req, res) => {
     const query = req.query;
-    console.log(query)
     try {
         const filter = {
             city: query.city || undefined,
@@ -16,7 +15,6 @@ export const getPosts = async (req, res) => {
                 $lte: parseInt(query.maxPrice) || 1000000
             },
         };
-        console.log("filter--", filter)
         const posts = await Post.find(filter).populate('postDetails');
         res.status(200).json(posts)
     } catch (error) {
@@ -29,7 +27,16 @@ export const getPost = async (req, res) => {
     const postId = req.params.id;
     try {
         const singlePost = await Post.findById({ _id: postId }).populate('postDetails').populate('user');
-        res.status(200).json(singlePost)
+        let userId;
+        const token = req.cookie.token;
+        if (token) {
+            jwt.verify(token, "", async (err, payload) => {
+                if (!err) {
+                    const savedPost = await SavedPost.findById({ _id: postId, user: payload.id })
+                    res.status(200).json(singlePost)
+                }
+            })
+        }
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Failed to get post!" })
@@ -56,7 +63,6 @@ export const createPost = async (req, res) => {
 }
 
 export const updatePost = async (req, res) => {
-    console.log("update post")
 
     // const postId = req.params.id;
     // const tokenUserId = req.userId
