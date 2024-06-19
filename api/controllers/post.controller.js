@@ -28,7 +28,7 @@ export const getPost = async (req, res) => {
     try {
         const singlePost = await Post.findById({ _id: postId }).populate('postDetails').populate('user');
         let userId;
-        const token = req.cookie.token;
+        const token = req.cookies.token;
         if (token) {
             jwt.verify(token, "", async (err, payload) => {
                 if (!err) {
@@ -98,8 +98,6 @@ export const deletePost = async (req, res) => {
         res.status(500).json({ message: "Failed to delete post!" })
     }
 }
-
-
 export const savePost = async (req, res) => {
     const postId = req.body.postId;
     const userTokenId = req.userId;

@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import axios from "axios";
 import "./SinglePage.scss";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 
 import { singlePostData, userData } from "../../lib/dummyData";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+
 const SinglePage = () => {
+  const [saved, setSaved] = useState(post.isSaved);
   const post = useLoaderData();
+  const { currentUser } = useContext(AuthContext);
+  const router = useNavigate();
+
+  const handleSave = async () => {
+    setSaved((prev) => !prev);
+    if (!currentUser) {
+      router.navigate("/login");
+    }
+    try {
+      await axios.post("http://localhost:8800/api/users/save", {
+        postId: post.id,
+      });
+    } catch (error) {
+      console.log(error);
+      setSaved((prev) => !prev);
+    }
+  };
   console.log("post", post);
   return (
     <div className="singlePage">
@@ -106,9 +127,9 @@ const SinglePage = () => {
               <img src="/chat.png" alt="" />
               Send a Message
             </button>
-            <button>
+            <button onClick={handleSave}>
               <img src="/save.png" alt="" />
-              Save the Place
+              {saved ? "Placce Saved" : "Save the Place"}
             </button>
           </div>
         </div>
