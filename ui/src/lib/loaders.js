@@ -13,3 +13,10 @@ export const listPageLoader = async ({ request, params }) => {
         postResponse: response.data
     })
 }
+
+export const profilePageLoader = async () => {
+    const response = axios.get(`http://localhost:8800/api/posts/profilePosts`);
+    return defer({
+        postResponse: response.data
+    })
+}
